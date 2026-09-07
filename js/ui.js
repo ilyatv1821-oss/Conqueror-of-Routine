@@ -47,31 +47,63 @@ export const sfx = {
   done()  { [523,660,880,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'triangle',.22), i*140)); },
 };
 
-// ---------- ПЕРСОНАЖ ----------
+// ---------- ПЕРСОНАЖ (по концепт-арту: булочка-голова, красный шарф, кожаный доспех) ----------
 export function heroSVG(mood, size) {
   const faces = {
-    sleepy: `<path d="M40 52 q6 6 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-      <path d="M68 52 q6 6 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="60" cy="67" r="3" fill="#33302a"/>
-      <text x="96" y="28" font-size="16" fill="#7a7264" font-family="Caveat">z</text>
-      <text x="106" y="16" font-size="12" fill="#7a7264" font-family="Caveat">z</text>`,
-    awake: `<circle cx="46" cy="52" r="3.5" fill="#33302a"/><circle cx="74" cy="52" r="3.5" fill="#33302a"/>
-      <path d="M52 64 q8 7 16 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>`,
-    happy: `<path d="M40 54 q6 -7 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-      <path d="M68 54 q6 -7 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-      <path d="M50 63 q10 12 20 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>`,
-    work: `<path d="M40 51 h12" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-      <path d="M68 51 h12" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-      <path d="M54 66 h12" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>`,
+    sleepy: `<path d="M50 48 q6 6 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M78 48 q6 6 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="70" cy="62" r="3" fill="#33302a"/>
+      <text x="104" y="26" font-size="16" fill="#7a7264" font-family="Caveat">z</text>
+      <text x="114" y="14" font-size="12" fill="#7a7264" font-family="Caveat">z</text>`,
+    awake: `<circle cx="56" cy="48" r="3.5" fill="#33302a"/><circle cx="84" cy="48" r="3.5" fill="#33302a"/>
+      <path d="M64 60 q6 6 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>`,
+    happy: `<path d="M50 50 q6 -7 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M78 50 q6 -7 12 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M62 58 q8 12 16 0" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>`,
+    work: `<path d="M50 47 h12" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M78 47 h12" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
+      <path d="M64 61 h12" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>`,
   };
-  return `<svg class="hero-svg" viewBox="0 0 120 140" width="${size || 140}" aria-hidden="true">
-    <ellipse cx="60" cy="106" rx="34" ry="28" fill="#8a5a33" stroke="#33302a" stroke-width="3"/>
-    <rect x="28" y="104" width="64" height="9" fill="#5b3a1e"/>
-    <rect x="53" y="101" width="14" height="14" fill="#d9a441" stroke="#33302a" stroke-width="2"/>
-    <path d="M26 84 Q60 98 94 84 L94 94 Q60 108 26 94 Z" fill="#a63d2f" stroke="#33302a" stroke-width="3"/>
-    <circle cx="60" cy="50" r="34" fill="#fdf6e8" stroke="#33302a" stroke-width="3"/>
-    <path d="M50 18 Q60 8 68 20" fill="none" stroke="#33302a" stroke-width="3" stroke-linecap="round"/>
-    <circle cx="38" cy="60" r="5" fill="#f3b8a8"/><circle cx="82" cy="60" r="5" fill="#f3b8a8"/>
+  return `<svg class="hero-svg" viewBox="0 0 140 170" width="${size || 140}" aria-hidden="true">
+    <!-- ботинки -->
+    <rect x="50" y="148" width="16" height="14" rx="6" fill="#6b4423" stroke="#33302a" stroke-width="3"/>
+    <rect x="74" y="148" width="16" height="14" rx="6" fill="#6b4423" stroke="#33302a" stroke-width="3"/>
+    <!-- тело-доспех -->
+    <ellipse cx="70" cy="118" rx="36" ry="34" fill="#8a5a33" stroke="#33302a" stroke-width="3"/>
+    <!-- крест-ремни с заклёпками -->
+    <path d="M46 98 L94 138" stroke="#b98d5f" stroke-width="7" stroke-linecap="round"/>
+    <path d="M94 98 L46 138" stroke="#b98d5f" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="52" cy="104" r="4" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <circle cx="88" cy="104" r="4" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <circle cx="52" cy="132" r="4" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <circle cx="88" cy="132" r="4" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <circle cx="70" cy="118" r="5" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <!-- ремень с бляхой -->
+    <rect x="38" y="132" width="64" height="10" rx="3" fill="#5b3a1e" stroke="#33302a" stroke-width="2"/>
+    <rect x="62" y="130" width="16" height="14" rx="2" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <rect x="66" y="134" width="8" height="6" fill="none" stroke="#33302a" stroke-width="2"/>
+    <!-- руки -->
+    <ellipse cx="32" cy="116" rx="9" ry="12" fill="#6b4423" stroke="#33302a" stroke-width="3"/>
+    <ellipse cx="108" cy="116" rx="9" ry="12" fill="#6b4423" stroke="#33302a" stroke-width="3"/>
+    <!-- наплечники с шипами -->
+    <path d="M30 86 l5 -11 l6 11 z" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <path d="M40 84 l5 -11 l6 11 z" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <ellipse cx="40" cy="94" rx="15" ry="11" fill="#7a4f2a" stroke="#33302a" stroke-width="3"/>
+    <path d="M94 84 l5 -11 l6 11 z" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <path d="M104 86 l5 -11 l6 11 z" fill="#cfd4d8" stroke="#33302a" stroke-width="2"/>
+    <ellipse cx="100" cy="94" rx="15" ry="11" fill="#7a4f2a" stroke="#33302a" stroke-width="3"/>
+    <!-- сумка на бедре -->
+    <ellipse cx="104" cy="142" rx="10" ry="9" fill="#c9a06a" stroke="#33302a" stroke-width="2.5"/>
+    <path d="M96 139 q8 -6 16 0" fill="none" stroke="#33302a" stroke-width="2"/>
+    <!-- шарф -->
+    <path d="M42 76 Q70 94 98 76 L98 90 Q70 108 42 90 Z" fill="#d4574a" stroke="#33302a" stroke-width="3"/>
+    <path d="M86 90 q12 12 6 28 q-10 -8 -14 -18 z" fill="#d4574a" stroke="#33302a" stroke-width="3"/>
+    <!-- голова-булочка с хохолком -->
+    <circle cx="70" cy="46" r="34" fill="#fdf6e8" stroke="#33302a" stroke-width="3"/>
+    <path d="M63 12 Q70 2 77 13 Q70 9 63 12 Z" fill="#fdf6e8" stroke="#33302a" stroke-width="3" stroke-linejoin="round"/>
+    <!-- румянец -->
+    <circle cx="48" cy="56" r="6" fill="#f6b3a6"/>
+    <circle cx="92" cy="56" r="6" fill="#f6b3a6"/>
     ${faces[mood] || faces.awake}
   </svg>`;
 }
