@@ -3,6 +3,7 @@ import { el, overlay, esc, stickerImg, hydrateStickers, enablePan } from '../ui.
 import { SLOTS, FURN, DEFAULT_OWNED, HERO_POS } from '../data.js';
 
 const isOwned = id => DEFAULT_OWNED.includes(id) || state.player.inventory.includes(id);
+const posStyle = s => `left:${s.x}%;width:${s.w}%;` + (s.b != null ? `bottom:${s.b}%;` : `top:${s.t}%;`);
 
 export function renderHome() {
   const done = ritualDone();
@@ -12,8 +13,8 @@ export function renderHome() {
   const furnLayers = Object.entries(state.home).map(([slot, id]) => {
     const s = SLOTS[slot];
     if (!id || !FURN[id])
-      return `<div class="slot-empty" data-slot="${slot}" style="left:${s.x}%;top:${s.y}%;width:${s.w}%;height:${s.h}%">+</div>`;
-    return `<div class="furn" data-slot="${slot}" style="left:${s.x}%;top:${s.y}%;width:${s.w}%">${stickerImg(FURN[id].img)}</div>`;
+      return `<div class="slot-empty" data-slot="${slot}" style="${posStyle(s)}height:${s.h}%">+</div>`;
+    return `<div class="furn" data-slot="${slot}" style="${posStyle(s)}">${stickerImg(FURN[id].img)}</div>`;
   }).join('');
 
   const wrap = el(`<main class="screen">
@@ -24,9 +25,9 @@ export function renderHome() {
         <div class="scene-room">
           <img class="base" src="img/room-base.png" alt="" draggable="false">
           ${furnLayers}
-          <div class="sticker" style="left:${hp.x}%;top:${hp.y}%;width:${hp.w}%">${stickerImg('hero-' + hero)}</div>
-          ${done ? '' : `<div class="sign" data-wake style="left:19%;top:40%">Разбуди меня</div>`}
-          <div class="hot" data-wake style="left:${hp.x - 2}%;top:${hp.y - 2}%;width:${hp.w + 4}%;height:34%"></div>
+          <div class="sticker" style="left:${hp.x}%;width:${hp.w}%;bottom:${hp.b}%">${stickerImg('hero-' + hero)}</div>
+          ${done ? '' : `<div class="sign" data-wake style="left:16%;bottom:42%">Разбуди меня</div>`}
+          <div class="hot" data-wake style="left:${hp.x - 2}%;width:${hp.w + 4}%;bottom:${hp.b - 2}%;height:42%"></div>
           <div class="hot" data-door style="left:78%;top:8%;width:18%;height:68%"></div>
         </div>
       </div>

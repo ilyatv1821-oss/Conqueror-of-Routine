@@ -12,12 +12,13 @@ export const EVENTS = {
   search: '🔍 Ты перешёл на новое место. Осмотрись: как продвигаются поиски?',
 };
 
+// Слоты: x/w — слева и ширина в %; b — отступ НИЗА от пола (напольные), t — от верха (настенные); h — высота пунктирного слота
 export const SLOTS = {
-  bed:     { x: 3,  y: 54, w: 30, h: 34, name: 'Кровать' },
-  board:   { x: 36, y: 46, w: 20, h: 42, name: 'Доска' },
-  shelf:   { x: 8,  y: 24, w: 16, h: 26, name: 'Полка' },
-  rug:     { x: 40, y: 80, w: 26, h: 13, name: 'Коврик' },
-  storage: { x: 70, y: 64, w: 15, h: 22, name: 'Хранилище' },
+  bed:     { x: 2,  w: 30, b: 8,  h: 26, name: 'Кровать' },
+  board:   { x: 34, w: 20, b: 14, h: 34, name: 'Доска' },
+  shelf:   { x: 7,  w: 16, t: 20, h: 20, name: 'Полка' },
+  rug:     { x: 38, w: 28, b: 0,  h: 12, name: 'Коврик' },
+  storage: { x: 68, w: 15, b: 10, h: 22, name: 'Хранилище' },
 };
 
 export const FURN = {
@@ -36,7 +37,8 @@ export const SHOP = [
   { id: 'bookcase', name: 'Книжный шкаф',  type: 'home', price: 150, icon: '📚' },
 ];
 
+// Позиции героя: тоже якорь по низу
 export const HERO_POS = {
-  sleepy: { x: 30, y: 62, w: 13 },
-  awake:  { x: 44, y: 62, w: 15 },
+  sleepy: { x: 27, w: 14, b: 12 },
+  awake:  { x: 45, w: 16, b: 6 },
 };

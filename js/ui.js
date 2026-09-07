@@ -47,7 +47,7 @@ export const sfx = {
   done()  { [523,660,880,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'triangle',.22), i*140)); },
 };
 
-// ---------- СТИКЕРЫ: хрома-вырезка зелёного фона ----------
+// ---------- СТИКЕРЫ: хрома-вырезка + автокроп прозрачных полей ----------
 const GLYPH = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 const chromaCache = new Map();
 function loadImg(src) {
@@ -66,8 +66,26 @@ export function processSticker(name) {
       const r = px[i], g = px[i + 1], b = px[i + 2];
       if (g > 110 && g - r > 35 && g - b > 35) px[i + 3] = 0;
     }
-    ctx.putImageData(d, 0, 0);
-    return c.toDataURL('image/png');
+    // габарит непрозрачной части
+    let minX = c.width, minY = c.height, maxX = -1, maxY = -1;
+    for (let y = 0; y < c.height; y++) {
+      for (let x = 0; x < c.width; x++) {
+        if (px[(y * c.width + x) * 4 + 3] > 10) {
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        }
+      }
+    }
+    if (maxX < 0) return c.toDataURL('image/png');
+    const pad = 4;
+    minX = Math.max(0, minX - pad); minY = Math.max(0, minY - pad);
+    maxX = Math.min(c.width - 1, maxX + pad); maxY = Math.min(c.height - 1, maxY + pad);
+    const c2 = document.createElement('canvas');
+    c2.width = maxX - minX + 1; c2.height = maxY - minY + 1;
+    c2.getContext('2d').putImageData(d, -minX, -minY);
+    return c2.toDataURL('image/png');
   });
   chromaCache.set(name, p);
   return p;
@@ -82,7 +100,7 @@ export function hydrateStickers(root = document) {
   });
 }
 
-// ---------- ГОРИЗОНТАЛЬНЫЙ ПАН (drag-scroll) ----------
+// ---------- ГОРИЗОНТАЛЬНЫЙ ПАН ----------
 export function enablePan(scrollEl) {
   let down = false, dragged = false, sx = 0, sl = 0;
   scrollEl.addEventListener('pointerdown', e => { down = true; dragged = false; sx = e.clientX; sl = scrollEl.scrollLeft; scrollEl.classList.add('drag'); });
@@ -98,7 +116,7 @@ export function enablePan(scrollEl) {
   }, true);
 }
 
-// ---------- СЦЕНЫ (для фокуса/награды) ----------
+// ---------- СЦЕНЫ (фокус/награда) ----------
 export function sceneStage(name, cls = '', fx = '') {
   return `<div class="stage ${cls}" data-stage>
     <img class="scene" src="img/${name}.png" alt="" draggable="false">
