@@ -12,10 +12,9 @@ export const EVENTS = {
   search: '🔍 Ты перешёл на новое место. Осмотрись: как продвигаются поиски?',
 };
 
-// Слоты комнаты (x/y/w/h — проценты сцены). Подобрано под пустую панораму крупнее.
 export const SLOTS = {
   bed:     { x: 3,  y: 54, w: 30, h: 34, name: 'Кровать' },
-  board:   { x: 36, y: 40, w: 20, h: 44, name: 'Доска' },
+  board:   { x: 36, y: 46, w: 20, h: 42, name: 'Доска' },
   shelf:   { x: 8,  y: 24, w: 16, h: 26, name: 'Полка' },
   rug:     { x: 40, y: 80, w: 26, h: 13, name: 'Коврик' },
   storage: { x: 70, y: 64, w: 15, h: 22, name: 'Хранилище' },
@@ -38,6 +37,6 @@ export const SHOP = [
 ];
 
 export const HERO_POS = {
-  sleepy: { x: 29, y: 50, w: 13 },
-  awake:  { x: 46, y: 46, w: 15 },
+  sleepy: { x: 30, y: 62, w: 13 },
+  awake:  { x: 44, y: 62, w: 15 },
 };
