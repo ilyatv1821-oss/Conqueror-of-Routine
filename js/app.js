@@ -1,32 +1,26 @@
 import { state, saveState, nav, ritualDone, isHalted, isPaused, isFrozen, questRemaining } from './state.js';
 import { el, fmtMS, modalOpen } from './ui.js';
 import { renderHome } from './screens/home.js';
+import { renderStreet } from './screens/street.js';
 import { renderBoard } from './screens/board.js';
 import { renderShop } from './screens/shop.js';
 import { renderFocus } from './screens/focus.js';
 import { openEvent, openTimeUp, openPauseExpired } from './quest.js';
 
-function renderTopbar() {
-  const unlocked = ritualDone() || state.activeQuest;
-  const bar = el(`<header class="topbar">
-    <span class="coins">🪙 ${state.player.coins}</span>
-    <nav>
-      <button class="btn ${nav.screen==='home'?'on':''}" data-nav="home">Дом</button>
-      <button class="btn ${nav.screen==='board'?'on':''}" data-nav="board" ${unlocked?'':'disabled'}>Доска</button>
-      <button class="btn ${nav.screen==='shop'?'on':''}" data-nav="shop">Магазин</button>
-    </nav>
-  </header>`);
-  bar.querySelectorAll('[data-nav]').forEach(b => b.onclick = () => nav.go(b.dataset.nav));
-  return bar;
+function coinsFloat() {
+  const d = el(`<button class="coins coins-float" title="В лавку">🪙 ${state.player.coins}</button>`);
+  d.onclick = () => nav.go('shop');
+  return d;
 }
 
 function render() {
   const app = document.getElementById('app');
   app.innerHTML = '';
-  if (nav.screen !== 'focus') app.appendChild(renderTopbar());
+  if (nav.screen !== 'focus') app.appendChild(coinsFloat());
   if (nav.screen === 'home') app.appendChild(renderHome());
-  if (nav.screen === 'board') app.appendChild(renderBoard());
+  if (nav.screen === 'street') app.appendChild(renderStreet());
   if (nav.screen === 'shop') app.appendChild(renderShop());
+  if (nav.screen === 'guild') app.appendChild(renderBoard());
   if (nav.screen === 'focus') app.appendChild(renderFocus());
 }
 nav.onRender = render;
