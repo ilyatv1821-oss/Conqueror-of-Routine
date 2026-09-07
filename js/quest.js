@@ -1,5 +1,5 @@
 import { state, saveState, nav, isHalted, FROZEN } from './state.js';
-import { overlay, chipGroup, sfx } from './ui.js';
+import { overlay, chipGroup, sfx, sceneStage, fxSpark, confetti, shakeStage } from './ui.js';
 import { EVENTS } from './data.js';
 
 export function freezeNow() {
@@ -77,6 +77,7 @@ export function completeQuest() {
   state.activeQuest = null;
   saveState(); sfx.done();
   const m = overlay(`<div class="paper dialog pop" style="text-align:center">
+    ${sceneStage('room-awake', 'stage-modal', fxSpark)}
     <h3 class="hand">🪙 Контракт выполнен!</h3>
     <p style="margin:0">+${stepCoins} за шаги · +${bonus} за завершение</p>
     <div class="row" style="justify-content:center">
@@ -85,6 +86,7 @@ export function completeQuest() {
       <button class="btn" id="r-home">Домой</button>
     </div>
   </div>`);
+  confetti(m.querySelector('.dialog'));
   m.querySelector('#r-shop').onclick = () => { m.remove(); nav.go('shop'); };
   m.querySelector('#r-board').onclick = () => { m.remove(); nav.go('board'); };
   m.querySelector('#r-home').onclick = () => { m.remove(); nav.go('home'); };
@@ -100,7 +102,9 @@ export function openEvent() {
       <button class="btn primary" id="ev-go">Продолжаю приключение</button>
     </div>
   </div>`);
-  m.querySelector('#ev-go').onclick = () => { m.remove(); resumeQuest(); nav.onRender && nav.onRender(); };
+  m.querySelector('#ev-go').onclick = () => {
+    m.remove(); resumeQuest(); nav.onRender && nav.onRender(); shakeStage();
+  };
 }
 
 export function openTimeUp() {
