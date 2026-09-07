@@ -5,13 +5,10 @@ import { openForm } from './form.js';
 
 export function renderBoard() {
   const done = ritualDone();
-  const cover = !done
-    ? (state.ritualItems.length
-        ? '<div class="paper cover">Наёмник ещё не привёл себя в порядок 🪥</div>'
-        : '<div class="paper cover">Ритуал пуст — собери его в Доме 🏠</div>')
-    : (state.activeQuest ? '<div class="paper cover">Сначала заверши текущий контракт 📜</div>' : '');
+  const cover = state.activeQuest ? '<div class="paper cover">Сначала заверши текущий контракт 📜</div>' : '';
   const wrap = el(`<main class="screen">
-    <h2 class="hand">Доска объявлений</h2>
+    <button class="backlink" data-back>← На улицу</button>
+    <h2 class="hand">Гильдия</h2>
     ${cover}
     <div class="notes">
       ${Object.entries(ARCHETYPES).map(([a, info], i) => {
@@ -26,6 +23,7 @@ export function renderBoard() {
       }).join('')}
     </div>
   </main>`);
+  wrap.querySelector('[data-back]').onclick = () => nav.go('street');
   wrap.querySelectorAll('[data-quest]').forEach(btn => btn.onclick = () => {
     const a = btn.dataset.quest;
     if (state.board[a] === 'active') nav.go('focus');

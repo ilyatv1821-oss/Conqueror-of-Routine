@@ -4,8 +4,9 @@ import { SHOP } from '../data.js';
 
 export function renderShop() {
   const wrap = el(`<main class="screen">
+    <button class="backlink" data-back>← На улицу</button>
     <h2 class="hand">Лавка торговца</h2>
-    <div class="coins">🪙 ${state.player.coins}</div>
+    <div class="placeholder">Мебель ставится в доме: кликни по слоту или стоящей мебели</div>
     <div class="shopgrid">
       ${SHOP.map(it => {
         const owned = state.player.inventory.includes(it.id);
@@ -18,6 +19,7 @@ export function renderShop() {
       }).join('')}
     </div>
   </main>`);
+  wrap.querySelector('[data-back]').onclick = () => nav.go('street');
   wrap.querySelectorAll('[data-item]').forEach(b => b.onclick = () => {
     const it = SHOP.find(x => x.id === b.dataset.item);
     if (!it || state.player.inventory.includes(it.id) || state.player.coins < it.price) return;

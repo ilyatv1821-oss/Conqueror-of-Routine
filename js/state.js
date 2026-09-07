@@ -8,6 +8,7 @@ export function initialState() {
     day: { date: today() },
     ritualItems: [],
     ritualSeq: 1,
+    home: { bed: 'bed', board: 'board', shelf: 'shelf', rug: 'rug', storage: null },
     board: { gathering: 'available', fight: 'available', escort: 'available', search: 'available' },
     activeQuest: null,
   };
@@ -26,6 +27,7 @@ export function loadState() {
       s.ritualSeq = s.ritualItems.length + 1;
     }
     if (s.ritualSeq == null) s.ritualSeq = s.ritualItems.reduce((m, i) => Math.max(m, i.id), 0) + 1;
+    if (!s.home) s.home = { bed: 'bed', board: 'board', shelf: 'shelf', rug: 'rug', storage: null };
     if (s.day.date !== today()) {
       s.day = { date: today() };
       s.ritualItems.forEach(i => { i.done = false; });
@@ -46,13 +48,11 @@ export let state = loadState();
 export const saveState = () => localStorage.setItem(KEY, JSON.stringify(state));
 export const ritualDone = () => state.ritualItems.length > 0 && state.ritualItems.every(i => i.done);
 
-// модель времени
 export const isHalted = q => q.pausedAt != null;
 export const isPaused = q => q.pausedUntil != null && q.pausedUntil !== FROZEN;
 export const isFrozen = q => q.pausedUntil === FROZEN;
 export const questRemaining = q => isHalted(q) ? q.endsAt - q.pausedAt : q.endsAt - Date.now();
 
-// навигация без циклических импортов
 export const nav = {
   screen: 'home',
   onRender: null,

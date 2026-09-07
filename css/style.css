@@ -10,11 +10,6 @@ body { margin: 0; font-family: var(--font-ui); color: var(--ink); min-height: 10
   background: radial-gradient(1000px 500px at 85% -10%, #fff6dd 0%, transparent 60%), var(--paper); }
 .app { max-width: 960px; margin: 0 auto; padding: 0 16px calc(64px + env(safe-area-inset-bottom, 0px)); }
 
-/* ---------- TOPBAR ---------- */
-.topbar { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
-.topbar nav { margin-left: auto; display: flex; gap: 8px; }
-.coins { font-weight: 800; background: var(--card); border: 2px solid var(--ink); border-radius: 999px; padding: 6px 14px; box-shadow: var(--shadow); }
-
 /* ---------- КНОПКИ ---------- */
 .btn { font: inherit; font-weight: 800; color: var(--ink); background: var(--card); border: 2px solid var(--ink); border-radius: 10px; padding: 8px 14px; cursor: pointer; box-shadow: var(--shadow); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
@@ -35,25 +30,34 @@ body { margin: 0; font-family: var(--font-ui); color: var(--ink); min-height: 10
 .invrow { display: flex; gap: 8px; font-size: 26px; }
 .stats { font-weight: 800; }
 
-/* ---------- СЦЕНЫ И АНИМАЦИЯ ---------- */
-.stage { position: relative; width: min(420px, 100%); }
-.stage .scene { width: 100%; display: block; border-radius: 16px; box-shadow: var(--shadow);
-  animation: breathe 4.5s ease-in-out infinite; transform-origin: 50% 92%; }
-.stage-modal { width: 100%; }
-.stage-modal .scene { border-radius: 12px; }
-@keyframes breathe { 0%,100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.015) translateY(-3px); } }
-.stage.hop .scene { animation: hop .5s ease; }
-@keyframes hop { 0%{transform:translateY(0)} 30%{transform:translateY(-14px) scale(1.02)} 55%{transform:translateY(0)} 75%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
-.stage.shake .scene { animation: shake .5s ease; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px) rotate(-.6deg)} 40%{transform:translateX(7px) rotate(.6deg)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
-.fx { position: absolute; pointer-events: none; font-family: var(--font-hand); font-weight: 700; }
-.fx-z { color: #8a8378; font-size: 1.3rem; animation: floatz 3s linear infinite; }
-@keyframes floatz { 0% { opacity: 0; transform: translate(0,0) rotate(-8deg) scale(.8); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(16px,-44px) rotate(12deg) scale(1.2); } }
-.fx-spark { color: var(--gold); font-size: 1.1rem; animation: twinkle 1.8s ease-in-out infinite; }
-@keyframes twinkle { 0%,100% { opacity: 0; transform: scale(.5) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(25deg); } }
-.confetti { position: absolute; top: -10px; width: 8px; height: 12px; border-radius: 2px; pointer-events: none; animation: fall 1.5s ease-in forwards; }
-@keyframes fall { to { transform: translateY(360px) rotate(540deg); opacity: 0; } }
-.dialog.pop { overflow: hidden; }
+/* ---------- МОНЕТЫ ---------- */
+.coins { font-weight: 800; background: var(--card); border: 2px solid var(--ink); border-radius: 999px; padding: 6px 14px; box-shadow: var(--shadow); }
+.coins-float { position: fixed; top: 10px; right: 12px; z-index: 6; cursor: pointer; }
+
+/* ---------- МИР: ПАНОРАМА, СТИКЕРЫ, ХОТСПОТЫ ---------- */
+.world { width: min(960px, 100%); }
+.world-scroll { overflow-x: auto; overflow-y: hidden; border-radius: 16px; box-shadow: var(--shadow);
+  cursor: grab; touch-action: pan-x; background: #efe6d2; }
+.world-scroll.drag { cursor: grabbing; }
+.scene-room { position: relative; width: 1500px; }
+.scene-fit { position: relative; width: 100%; }
+.scene-room > img.base, .scene-fit > img.base { width: 100%; display: block; }
+.sticker { position: absolute; pointer-events: none; }
+.sticker img { width: 100%; display: block; filter: drop-shadow(0 2px 2px rgba(0,0,0,.18)); }
+.furn { position: absolute; cursor: pointer; border-radius: 10px; }
+.furn img { width: 100%; display: block; pointer-events: none; filter: drop-shadow(0 2px 2px rgba(0,0,0,.12)); }
+.furn:hover { outline: 2px dashed var(--ink-soft); outline-offset: 4px; }
+.slot-empty { position: absolute; border: 2px dashed var(--ink-soft); border-radius: 12px; color: var(--ink-soft);
+  font-weight: 800; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: .65; }
+.slot-empty:hover { opacity: 1; background: rgba(255,255,255,.25); }
+.hot { position: absolute; cursor: pointer; border-radius: 12px; }
+.hot:hover { background: rgba(255,255,255,.16); outline: 2px dashed rgba(51,48,42,.45); outline-offset: -2px; }
+.sign { position: absolute; font-family: var(--font-hand); font-size: 1.5rem; color: var(--ink);
+  background: var(--card); border: 2px solid var(--ink); border-radius: 10px; padding: 2px 12px;
+  box-shadow: var(--shadow); transform: rotate(-3deg); cursor: pointer; z-index: 3; }
+.backlink { font-family: var(--font-hand); font-size: 1.4rem; color: var(--ink); background: var(--card);
+  border: 2px solid var(--ink); border-radius: 10px; padding: 2px 14px; box-shadow: var(--shadow);
+  cursor: pointer; align-self: flex-start; }
 
 /* ---------- РИТУАЛ ---------- */
 .ritual { width: min(420px, 100%); display: flex; flex-direction: column; gap: 10px; }
@@ -63,7 +67,7 @@ body { margin: 0; font-family: var(--font-ui); color: var(--ink); min-height: 10
 #rit-new { font: inherit; background: #fffdf6; border: 2px solid var(--ink); border-radius: 8px; padding: 8px 10px; flex: 1; min-width: 0; }
 input[type=range] { width: 100%; height: 28px; accent-color: var(--accent); cursor: pointer; }
 
-/* ---------- ДОСКА ---------- */
+/* ---------- ДОСКА / ГИЛЬДИЯ ---------- */
 .notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; width: min(720px, 100%); }
 .note { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; text-align: left; padding: 14px; }
 .note .icon { font-size: 30px; }
@@ -81,7 +85,7 @@ input[type=range] { width: 100%; height: 28px; accent-color: var(--accent); curs
 /* ---------- МОДАЛКИ ---------- */
 .modal { position: fixed; inset: 0; background: rgba(43,33,20,.45); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 10; }
 .dialog { width: min(480px, 100%); display: flex; flex-direction: column; gap: 12px; max-height: 90vh; overflow: auto; }
-.dialog.pop { animation: pop .25s ease-out; }
+.dialog.pop { animation: pop .25s ease-out; overflow: hidden; }
 @keyframes pop { from { transform: scale(.85); opacity: .4; } to { transform: scale(1); opacity: 1; } }
 
 /* ---------- ФОРМА КОНТРАКТА ---------- */
@@ -103,6 +107,25 @@ input[type=range] { width: 100%; height: 28px; accent-color: var(--accent); curs
 .pausebox { display: flex; flex-direction: column; gap: 8px; width: 100%; }
 .flow-on { background: #d9ead1; color: var(--ok); border-color: var(--ok); }
 
+/* ---------- СЦЕНЫ И АНИМАЦИЯ (фокус/награда) ---------- */
+.stage { position: relative; width: min(420px, 100%); }
+.stage .scene { width: 100%; display: block; border-radius: 16px; box-shadow: var(--shadow);
+  animation: breathe 4.5s ease-in-out infinite; transform-origin: 50% 92%; }
+.stage-modal { width: 100%; }
+.stage-modal .scene { border-radius: 12px; }
+@keyframes breathe { 0%,100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.015) translateY(-3px); } }
+.stage.hop .scene { animation: hop .5s ease; }
+@keyframes hop { 0%{transform:translateY(0)} 30%{transform:translateY(-14px) scale(1.02)} 55%{transform:translateY(0)} 75%{transform:translateY(-6px)} 100%{transform:translateY(0)} }
+.stage.shake .scene { animation: shake .5s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px) rotate(-.6deg)} 40%{transform:translateX(7px) rotate(.6deg)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+.fx { position: absolute; pointer-events: none; font-family: var(--font-hand); font-weight: 700; }
+.fx-z { color: #8a8378; font-size: 1.3rem; animation: floatz 3s linear infinite; }
+@keyframes floatz { 0% { opacity: 0; transform: translate(0,0) rotate(-8deg) scale(.8); } 25% { opacity: 1; } 100% { opacity: 0; transform: translate(16px,-44px) rotate(12deg) scale(1.2); } }
+.fx-spark { color: var(--gold); font-size: 1.1rem; animation: twinkle 1.8s ease-in-out infinite; }
+@keyframes twinkle { 0%,100% { opacity: 0; transform: scale(.5) rotate(0deg); } 50% { opacity: 1; transform: scale(1.15) rotate(25deg); } }
+.confetti { position: absolute; top: -10px; width: 8px; height: 12px; border-radius: 2px; pointer-events: none; animation: fall 1.5s ease-in forwards; }
+@keyframes fall { to { transform: translateY(360px) rotate(540deg); opacity: 0; } }
+
 /* ---------- МАГАЗИН ---------- */
 .shopgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; width: min(720px, 100%); }
 .shopitem { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px; }
@@ -112,11 +135,10 @@ input[type=range] { width: 100%; height: 28px; accent-color: var(--accent); curs
 
 /* ---------- АДАПТИВ ---------- */
 @media (max-width: 560px) {
-  .topbar { flex-wrap: wrap; gap: 8px; }
-  .topbar nav { margin-left: 0; width: 100%; }
-  .topbar nav .btn { flex: 1; }
   .timer { font-size: 32px; }
-  .focushead h3 { font-size: 1.4rem; }
   .brand { font-size: 1.9rem; }
   .row .btn { flex: 1 1 auto; }
+  .sign { font-size: 1.2rem; }
+  .backlink { font-size: 1.2rem; }
+  .world-scroll { border-radius: 12px; }
 }

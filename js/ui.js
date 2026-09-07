@@ -47,22 +47,68 @@ export const sfx = {
   done()  { [523,660,880,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'triangle',.22), i*140)); },
 };
 
-// ---------- СЦЕНЫ И АНИМАЦИЯ ----------
+// ---------- СТИКЕРЫ: хрома-вырезка зелёного фона ----------
+const GLYPH = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const chromaCache = new Map();
+function loadImg(src) {
+  return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+}
+export function processSticker(name) {
+  if (chromaCache.has(name)) return chromaCache.get(name);
+  const p = loadImg(`img/${name}.png`).then(img => {
+    const c = document.createElement('canvas');
+    c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const d = ctx.getImageData(0, 0, c.width, c.height);
+    const px = d.data;
+    for (let i = 0; i < px.length; i += 4) {
+      const r = px[i], g = px[i + 1], b = px[i + 2];
+      if (g > 110 && g - r > 35 && g - b > 35) px[i + 3] = 0;
+    }
+    ctx.putImageData(d, 0, 0);
+    return c.toDataURL('image/png');
+  });
+  chromaCache.set(name, p);
+  return p;
+}
+export function stickerImg(name, cls = '') {
+  return `<img class="${cls}" data-sticker="${name}" src="${GLYPH}" alt="" draggable="false">`;
+}
+export function hydrateStickers(root = document) {
+  root.querySelectorAll('img[data-sticker]').forEach(img => {
+    const name = img.dataset.sticker;
+    processSticker(name).then(url => { img.src = url; }).catch(() => { img.src = `img/${name}.png`; });
+  });
+}
+
+// ---------- ГОРИЗОНТАЛЬНЫЙ ПАН (drag-scroll) ----------
+export function enablePan(scrollEl) {
+  let down = false, dragged = false, sx = 0, sl = 0;
+  scrollEl.addEventListener('pointerdown', e => { down = true; dragged = false; sx = e.clientX; sl = scrollEl.scrollLeft; scrollEl.classList.add('drag'); });
+  window.addEventListener('pointermove', e => {
+    if (!down) return;
+    const dx = e.clientX - sx;
+    if (Math.abs(dx) > 6) dragged = true;
+    scrollEl.scrollLeft = sl - dx;
+  });
+  window.addEventListener('pointerup', () => { down = false; scrollEl.classList.remove('drag'); setTimeout(() => { dragged = false; }, 0); });
+  scrollEl.addEventListener('click', e => {
+    if (dragged) { e.stopPropagation(); e.preventDefault(); dragged = false; }
+  }, true);
+}
+
+// ---------- СЦЕНЫ (для фокуса/награды) ----------
 export function sceneStage(name, cls = '', fx = '') {
   return `<div class="stage ${cls}" data-stage>
     <img class="scene" src="img/${name}.png" alt="" draggable="false">
     ${fx}
   </div>`;
 }
-export const fxSleepy = `
-  <span class="fx fx-z" style="top:20%; left:60%; animation-delay:0s">z</span>
-  <span class="fx fx-z" style="top:15%; left:68%; animation-delay:1s">z</span>
-  <span class="fx fx-z" style="top:10%; left:76%; animation-delay:2s">z</span>`;
 export const fxSpark = `
   <span class="fx fx-spark" style="top:18%; left:16%; animation-delay:0s">✦</span>
   <span class="fx fx-spark" style="top:12%; left:76%; animation-delay:.6s">✦</span>
   <span class="fx fx-spark" style="top:38%; left:88%; animation-delay:1.2s">✦</span>`;
-
 export function hopStage(root = document) {
   const s = root.querySelector('[data-stage]'); if (!s) return;
   s.classList.remove('hop', 'shake'); void s.offsetWidth; s.classList.add('hop');
