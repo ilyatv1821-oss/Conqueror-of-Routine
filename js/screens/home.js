@@ -1,5 +1,5 @@
 import { state, saveState, ritualDone, nav } from '../state.js';
-import { el, hero, esc } from '../ui.js';
+import { el, sceneStage, fxSleepy, fxSpark, esc } from '../ui.js';
 import { SHOP } from '../data.js';
 
 export function renderHome() {
@@ -12,7 +12,7 @@ export function renderHome() {
   const wrap = el(`<main class="screen">
     <h1 class="hand brand">Покоритель рутины</h1>
     <div class="slogan">Рутина будет покорена</div>
-    ${hero(done ? 'awake' : 'sleepy', 'hero-lg')}
+    ${sceneStage(done ? 'room-awake' : 'room-sleepy', '', done ? fxSpark : fxSleepy)}
     ${charRow ? `<div class="invrow">${charRow}</div>` : ''}
     <div class="paper stats">📜 контрактов: ${p.completed} · ⏱ минут: ${p.focusMin} · 🌅 дней: ${p.days}</div>
     <section class="paper ritual">

@@ -1,5 +1,5 @@
 import { state, saveState, nav, isHalted, isPaused } from '../state.js';
-import { el, hero, esc, fmtClock } from '../ui.js';
+import { el, sceneStage, esc, fmtClock, hopStage } from '../ui.js';
 import { ARCHETYPES } from '../data.js';
 import { openPauseForm, confirmDrop, resumeQuest, completeQuest } from '../quest.js';
 import { renderHome } from './home.js';
@@ -16,8 +16,9 @@ export function renderFocus() {
     </div></div>` : '';
 
   const wrap = el(`<main class="screen"><div class="paper focuscard">
-    <div class="focushead">${hero('work', 'hero-sm')}<h3 class="hand">${info.icon} ${info.title}</h3></div>
-    <p style="margin:0"><b>Реальность:</b> ${esc(q.essence)}</p>
+    <h3 class="hand" style="text-align:center">${info.icon} ${info.title}</h3>
+    ${sceneStage('focus-' + q.archetype)}
+    <p style="margin:0;text-align:center"><b>Реальность:</b> ${esc(q.essence)}</p>
     <div class="timer" id="timer">--:--</div>
     <div id="stepbox" class="ritual" style="width:100%"></div>
     ${pauseBlock}
@@ -32,6 +33,7 @@ export function renderFocus() {
     const lab = el(`<label class="check"><input type="checkbox" ${s.done ? 'checked' : ''}><span>${esc(s.text)}</span></label>`);
     lab.querySelector('input').onchange = e => {
       s.done = e.target.checked; saveState();
+      hopStage(wrap);
       if (q.steps.every(x => x.done)) completeQuest();
     };
     box.appendChild(lab);

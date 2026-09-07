@@ -47,11 +47,39 @@ export const sfx = {
   done()  { [523,660,880,1046].forEach((f,i)=>setTimeout(()=>beep(f,.18,'triangle',.22), i*140)); },
 };
 
-// ---------- ПЕРСОНАЖ ----------
-// Спрайт-лист 2×2 (img/hero-sheet.png): сон / бодр / деловой / радостный.
-// Нужная четверть вырезается через background-position (классы mood-*).
-export function hero(mood, sizeCls) {
-  return `<div class="hero-frame ${sizeCls || 'hero-lg'}">
-    <div class="hero-img mood-${mood}" role="img" aria-label="наёмник"></div>
+// ---------- СЦЕНЫ И АНИМАЦИЯ ----------
+export function sceneStage(name, cls = '', fx = '') {
+  return `<div class="stage ${cls}" data-stage>
+    <img class="scene" src="img/${name}.png" alt="" draggable="false">
+    ${fx}
   </div>`;
+}
+export const fxSleepy = `
+  <span class="fx fx-z" style="top:20%; left:60%; animation-delay:0s">z</span>
+  <span class="fx fx-z" style="top:15%; left:68%; animation-delay:1s">z</span>
+  <span class="fx fx-z" style="top:10%; left:76%; animation-delay:2s">z</span>`;
+export const fxSpark = `
+  <span class="fx fx-spark" style="top:18%; left:16%; animation-delay:0s">✦</span>
+  <span class="fx fx-spark" style="top:12%; left:76%; animation-delay:.6s">✦</span>
+  <span class="fx fx-spark" style="top:38%; left:88%; animation-delay:1.2s">✦</span>`;
+
+export function hopStage(root = document) {
+  const s = root.querySelector('[data-stage]'); if (!s) return;
+  s.classList.remove('hop', 'shake'); void s.offsetWidth; s.classList.add('hop');
+}
+export function shakeStage(root = document) {
+  const s = root.querySelector('[data-stage]'); if (!s) return;
+  s.classList.remove('hop', 'shake'); void s.offsetWidth; s.classList.add('shake');
+}
+export function confetti(host) {
+  if (!host) return;
+  const colors = ['#d9a441', '#a63d2f', '#5d7a45', '#7a9cc4'];
+  for (let i = 0; i < 16; i++) {
+    const p = document.createElement('span');
+    p.className = 'confetti';
+    p.style.left = (5 + Math.random() * 90) + '%';
+    p.style.background = colors[i % 4];
+    p.style.animationDelay = (Math.random() * .4) + 's';
+    host.appendChild(p);
+  }
 }
