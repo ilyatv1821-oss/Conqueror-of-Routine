@@ -1,4 +1,5 @@
-import { el, nav } from '../ui.js';
+import { el } from '../ui.js';
+import { nav } from '../state.js';
 
 export function renderStreet() {
   const wrap = el(`<main class="screen">
