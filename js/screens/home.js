@@ -25,9 +25,9 @@ export function renderHome() {
           <img class="base" src="img/room-base.png" alt="" draggable="false">
           ${furnLayers}
           <div class="sticker" style="left:${hp.x}%;top:${hp.y}%;width:${hp.w}%">${stickerImg('hero-' + hero)}</div>
-          ${done ? '' : `<div class="sign" data-wake style="left:13%;top:33%">Разбуди меня</div>`}
-          <div class="hot" data-wake style="left:${hp.x - 2}%;top:${hp.y - 2}%;width:${hp.w + 4}%;height:32%"></div>
-          <div class="hot" data-door style="left:78%;top:8%;width:17%;height:66%"></div>
+          ${done ? '' : `<div class="sign" data-wake style="left:19%;top:40%">Разбуди меня</div>`}
+          <div class="hot" data-wake style="left:${hp.x - 2}%;top:${hp.y - 2}%;width:${hp.w + 4}%;height:34%"></div>
+          <div class="hot" data-door style="left:78%;top:8%;width:18%;height:68%"></div>
         </div>
       </div>
     </div>
